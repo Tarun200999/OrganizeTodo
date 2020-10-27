@@ -3,15 +3,27 @@
   flex-direction: column;
   padding: 20px;
   margin:5px;
-  border:2px solid rgb(172, 208, 214);
+  border:2px solid rgb(118, 167, 240);
   flex-wrap: wrap;
   background-color: #0093E9;
 	background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
 	border-radius: 10px;margin: 20px;
 }
+.todo_show_shared{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin:5px;
+  border:2px solid rgb(247, 216, 117);
+  flex-wrap: wrap;
+  background-color: #f88538;
+	background-image: linear-gradient(160deg, #f7a253 0%, #fccc48 100%);
+	border-radius: 10px;margin: 20px;
+}
 .background{
-  background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(90,92,106,1) 0%, rgba(32,45,58,1) 81.3% );
-
+  /*background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(90,92,106,1) 0%, rgba(32,45,58,1) 81.3% );
+   */
+   background-color: black;
 }
 .navbar_top_fix{
   margin-bottom: 20px;

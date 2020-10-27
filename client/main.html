@@ -4,7 +4,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="main.css">
  </head>
-<body class="background"></body>
+<body></body>
 <!--IT Is THE LAYOUT OF THE PROJECT WINDOW -->
 <template name="ApplicationLayout">
    <div style="margin:0px;display: flex;flex-direction: column;">
@@ -26,8 +26,8 @@
 
 <!--NAVBAR TEMPLATE IS HERE-->
 <template name="navbar">
-	<nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top">
-			<a class="navbar-brand" style="color: rgb(245, 238, 238);" href="/">TODO</a>
+	<nav class="navbar navbar-expand-lg navbar-light navbar-fixed-top" style="background-color:whitesmoke;">
+			<a class="navbar-brand" style="color:black;" href="/">TODO</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -35,14 +35,17 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto">
 							<li>
-								<a class="nav-link" href="/showtodo" style="color: whitesmoke;">My Todo</a>
+								<a class="nav-link" href="/showtodo" style="color:black;">My Todo <span class="badge badge-primary">{{counttodo}}</span></a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="/showtodo/networks" style="color:whitesmoke;">Todo Shared to me</a>
-							</li>  
+							<li>
+								<a class="nav-link" href="/showtodo/networks" style="color:black;">Shared Todo's <span class="badge badge-primary">{{countsharedtodo}}</span></a>
+							</li> 
+							<li>
+								<a class="nav-link" href="/todorequests" style="color:black;">Todo Requests <span class="badge badge-primary">{{countrequest}}</span></a>
+							</li> 
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li style="margin-right: 30px;font-weight: 400;color: whitesmoke;padding: 10px;border-radius: 10px;">{{>loginButtons align="right"}}</li>
+							<li style="margin-right: 30px;font-weight: 400;color:black;padding: 10px;border-radius: 10px;">{{>loginButtons align="right"}}</li>
 						</ul>
 					
 		</div><!-- navbar here-->
@@ -59,14 +62,14 @@
 <template name="homepage">
 	<div>
 
-	 <h1 class="display-1" style="text-align: center;color:whitesmoke">Organize <span style="color: tomato;">Task</span></h1>
-	 <h2 style="text-align: center;font-weight: 400;margin-top: 60px;color:white;">With Your TeamMates,Friends,Collegues...</h2>
+	 <h1 class="display-1" style="text-align: center;color:grey">Organize <span style="color: tomato;">Task</span></h1>
+	 <h2 style="text-align: center;font-weight: 400;margin-top: 60px;color:black;">With Your TeamMates,Friends,Collegues...</h2>
      <div style="margin-top: 30px;height: 300px;padding: 30px;">
 	   
-		<h5 class="display-4" style="margin-top: 100px;color: white;">Developer</h5>
-		<h5 style="margin-top: 20px;color: whitesmoke;font-weight: 200;">TARUN</h5>
-		<h5 style="margin-top: 20px;color: whitesmoke;font-weight: 200;">IT-2ND SHIFT 03596303118</h5>
-		<h5 style="margin-top: 20px;color:whitesmoke;font-weight: 200;">MAHARAJA SURAJMAL INSTITUTE OF TECHNOLOGY</h5>
+		<h5 class="display-4" style="margin-top: 100px;color:black;">Developer</h5>
+		<h5 style="margin-top: 20px;color:black;font-weight: 200;">TARUN</h5>
+		<h5 style="margin-top: 20px;color:black;font-weight: 200;">IT-2ND SHIFT 03596303118</h5>
+		<h5 style="margin-top: 20px;color:black;font-weight: 200;">MAHARAJA SURAJMAL INSTITUTE OF TECHNOLOGY</h5>
 
 	 </div>	 
 
@@ -76,7 +79,26 @@
 
 
 <!--THIS IS ADD TODO BUTTON -->
-
+<template name="networkrequest">
+  <div>
+	<h3 style="color: green;font-weight: 400;">{{countrequest}}</h3>
+  {{#each networkunchecked}}
+               <div class="container-fluid" style="border: 1px solid rgb(255, 115, 0);margin:5px;border-radius: 5px; padding: 10px;">
+                 <div class="row">
+                   <div class="col-sm-8">
+                     <h5 style="margin: 5px;color: indigo;">{{gettitle todo_id}}</h5>
+					 <h6 style="margin: 2px;font-weight: 200;">UserId <spna style="font-weight: 500;">{{getusername curr_id}}</spna></h6>
+					 <h6 style="margin: 2px;font-weight: 100;">Date {{createdOn}}</h6>
+                   </div>
+                   <div class="col-sm-4">
+                       <button class="btn btn-success js_button_network_approval">Accept</button>
+                       <button class="btn btn-warning js_button_network_reject">Reject</button>
+                   </div>
+                 </div>
+               </div>  
+  {{/each}}
+</div>
+</template>
 
 <template name="add_todo_form">
 	<form class="js_addtodo_button">
@@ -86,7 +108,7 @@
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
-					<h6>New SubTask Details</h6>
+					<h6>New Todo Details</h6>
 					<button class="btn btn-warning" data-dismiss="modal">Close</button>	
 		      </div>
 		      <div class="modal-body">       
@@ -109,7 +131,7 @@
 					<input type="time" class="form-control" id="todo-duetime" value="05:30" name="todo_duetime"/>
 			     </div>
 
-	             <button class="btn btn-success">Add Task</button>
+	             <button class="btn btn-success">Add</button>
 	        </form> 
 	      </div>
 	      </div>
@@ -120,7 +142,7 @@
 
 <!--THIS IS SHOWTODO WHICH SHOW THE TODO OF THE USER-->
 <template name="showtodo">
-	<h3 style="color: white;margin:10px;font-weight: 200;">Todo that you added</h3>
+	<h3 style="color:grey;margin:10px;font-weight: 200;">Todo that you added</h3>
 	<div style="display:flex;flex-wrap: wrap;">
 		{{#each todo}}
 				 <div class="todo_show">
@@ -133,12 +155,46 @@
 					  </div>
 					  <div style="display: flex;">
 					 	    <a href="/showtodo/addtask/{{_id}}"><button class="js_addtask_button btn btn-success m-2" style="font-weight: 200;padding:5px;">View</button></a>
-					    	<button class="js_addnetwork_button btn btn-secondary" style="font-weight: 200;padding:2px;margin: 5px;">Add Collabator</button>
+							<button class="js_addnetwork_button btn btn-secondary" style="font-weight: 200;padding:2px;margin: 5px;">Add Collabator</button>
+							<button class="js_edittask_button btn btn-info" style="font-weight: 200;padding:5px;margin: 5px;">Edit</button>
 							<button class="btn btn-warning remove" style="margin:5px;font-weight: 200;padding: 3px;">Remove</button>
 					   </div>
 				 </div>
 		{{/each}}
 	</div>
+	<div class="modal fade" id="modal_edit_todo" style="background: rgba(0,0,0,0.5)">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+				  <h6>Edit Details</h6>
+				  <button class="btn btn-warning" data-dismiss="modal">Close</button>	
+			</div>
+			<div class="modal-body">       
+			  <form class="edit_todo">
+				<div class="form-group">
+				  <label for="todo_title">Title</label>
+				  <input type="text" class="form-control" placeholder="Title" id="todo_title"  name="todo_title"/>
+				</div>
+			   <div class="form-group">
+				  <label for="todo_description">Description</label>
+				  <textarea class="form-control" id="todo_description" placeholder="Description" name="todo_description"></textarea>
+				 
+			   </div>
+			   <div class="form-group">
+					 <label for="todo_duedate"> Due date </label>
+					 <input type="date" class="form-control" id="todo-duedate" name="todo_duedate"/>
+			   </div>
+			   <div class="form-group">
+				  <label for="todo_duetime"> Due time </label>
+				  <input type="time" class="form-control" id="todo-duetime" name="todo_duetime"/>
+			   </div>
+
+			   <button class="btn btn-success">Edit</button>
+		  </form> 
+		</div>
+		</div>
+	  </div>
+	</div><!-- todo add modal  here-->
     <div class="modal fade" id="modal_add_task" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true" style="background: rgba(0,0,0,0.5);">
 		  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
 		    <div class="modal-content" style="background: #fdfdfd">
@@ -224,12 +280,10 @@
 </template>
 <!-- it is doing all the shred todo stuff-->
 <template name="network_collections">
-	<h3 style="color: white;font-weight: 300;">Todo That are Shared to you</h3>
-    {{getpermission}}
-	<div style="display:flex;margin: 20px;flex-wrap: wrap;">
+	<h3 style="color:grey;font-weight: 300;">Todo That are Shared to you</h3>
+	<div style="display:flex;flex-wrap: wrap;">
 		{{#each network}}
-				 <div style="display: flex;flex-direction: column; padding: 20px;border:2px solid rgb(252, 227, 119);flex-wrap: wrap;background-color: #FBAB7E;
-                   background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);;border-radius: 10px;margin: 20px;">
+				 <div class="todo_show_shared">
 					  <div>
 					  	<h3 style="font-weight:400;color: whitesmoke;">{{gettitle todo_id}}</h3>
 						<h6 style="font-weight:100;margin-bottom: 10px;">{{getdescription todo_id}}</h6>
@@ -240,7 +294,7 @@
 							<h6><spna style="color:whitesmoke;">Due Time </spna> {{getduetime todo_id}}</h6>
 
 					  </div>
-					  <div style="display: flex;margin-left: 100px;">
+					  <div style="display: flex;">
 						<button class="btn btn-danger remove_todo_from_network m-2">Remove</button>
 						<a href="/showtodo/networks/addtask/{{_id}}"><button class="js_addtask_button_network btn btn-info m-2">View</button></a>
 					   </div>
@@ -251,7 +305,8 @@
 		  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		       <h5 class="modal-title" id="exampleModalCenterTitle">Sub Task</h5>
+			   <h5 class="modal-title" id="exampleModalCenterTitle">Sub Task</h5>
+			   <button class="btn btn-danger" data-dismiss="modal">Close</button>
 		      </div>
 		      <div class="modal-body">       
 				{{#each item}}	   
@@ -262,13 +317,14 @@
 								 <h6 style="font-weight: 300; color: darkblue;margin-top: 10px;">Added by {{checkTheuser createdBy}}</h6>
 							</div>
 							<div style="flex: 0.2;">
-
+								<form class="js_remove-task_from_todo">
+									<button class="btn btn-warning m-3">Remove</button>
+								</form>
 							</div>
 					 </div> 
 					  <div style="text-align: right;">
 							 <h6 style="color: rgb(66, 2, 240);">{{createdAt}}</h6>  	
 					  </div>			 
- 
 				</div>
 				{{/each}}
 	          </div>
@@ -281,33 +337,4 @@
 	      </div>
 	    </div>
 	  </div>
-
-<!-- approval for new network modal-->
-    <div class="modal fade" id="modal_new_network" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true" style="background: rgba(0,0,0,0.5);">
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-           <h5 class="modal-title" id="exampleModalCenterTitle">Someone Share You Todo's</h5>
-          </div>
-          <div class="modal-body">       
-               {{#each networkunchecked}}
-               <div class="container-fluid" style="border: 1px solid rgb(255, 115, 0);margin:10px;border-radius: 5px; padding: 10px;">
-                 <div class="row">
-                   <div class="col-sm-6">
-                     <h5 class="bg bg-faded">{{gettitle todo_id}}</h5>
-                     <h6>Author Username {{getusername curr_id}}</h6>
-                   </div>
-                   <div class="col-sm-6">
-                       <button class="btn btn-success js_button_network_approval">Accept</button>
-                       <button class="btn btn-warning js_button_network_reject">Reject</button>
-                   </div>
-                 </div>
-               </div>  
-               {{/each}}
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-      </div>
-    </div><!-- todo add modal  here-->
 </template>

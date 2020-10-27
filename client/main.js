@@ -79,6 +79,38 @@ Router.route('/showtodo', function ()
 	 })
 	}
 });
+Router.route('/todorequests', function () 
+{
+	if(!Meteor.user())
+	  {	
+        this.render('navbar',{
+  	      to:"1"
+		});
+		this.render('empty',{
+		  to:"2"
+		});
+		this.render('homepage',{
+			to:"3"
+		});
+		this.render('empty',{
+            to:"4"
+		});
+      }
+	else{
+	this.render('navbar',{
+     	to:"1"
+     });
+	 this.render('empty',{
+  	   to:"2"
+     });
+     	this.render('networkrequest',{
+  	   to:"3"
+	 });
+	 this.render('empty',{
+		 to:"4"
+	 })
+	}
+});
 Router.route('/showtodo/addtask/:_id', function () 
 {
 	  this.render('navbar',{
@@ -110,24 +142,52 @@ Router.route('/showtodo/networks/addtask/:_id', function ()
 });    
 Router.route('/showtodo/networks', function () 
 {    
-	this.render('navbar',{
-  	   to:"1"
-         });
-     
-     	this.render('empty1',{
-  	   to:"2"
-         });
-     	this.render('network_collections',{
+	if(!Meteor.user())
+	  {	
+        this.render('navbar',{
+  	      to:"1"
+		});
+		this.render('empty',{
+		  to:"2"
+		});
+		this.render('homepage',{
 			to:"3"
-			});
-     	this.render('empty',{
-  	     to:"4"
-		 });	
+		});
+		this.render('empty',{
+            to:"4"
+		});
+      }
+	else{
+	this.render('navbar',{
+     	to:"1"
+     });
+	 this.render('empty',{
+  	   to:"2"
+     });
+     	this.render('network_collections',{
+  	   to:"3"
+	 });
+	 this.render('empty',{
+		 to:"4"
+	 })
+	}
+	
 });    
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_ONLY'
 });
 //this is used to configer the user login form
+Template.navbar.helpers({
+   counttodo:function(){
+         return Todo.find({todoBy:Meteor.user()._id}).count();
+   },
+   countsharedtodo:function(){
+        return Network.find({network_id:Meteor.user()._id,approved:true}).count();
+   },
+   countrequest:function(){
+        return Network.find({network_id:Meteor.user()._id,approved:false}).count();
+   }
+});
 Template.showtodo.helpers({
 	todo: function () {
 
@@ -169,15 +229,40 @@ Template.showtodo.helpers({
 
 	
 });
-Template.network_collections.helpers({
-	networkunchecked:function()
-	{   
-		if(Network.find({network_id:Meteor.user()._id,approved:false}).count()==0)
-		{
-			$("#modal_new_network").modal('hide');
-		}
-		return Network.find({network_id:Meteor.user()._id,approved:false});
+
+
+Template.networkrequest.helpers({
+
+	countrequest:function(){
+		 if(Network.find({network_id:Meteor.user()._id,approved:false}).count()==0)
+		      return "No New Request";
 	},
+	networkunchecked:function()
+	 {   
+		 return Network.find({network_id:Meteor.user()._id,approved:false});
+	 },
+	 getusername:function(user_id)
+	 {   
+		 return Meteor.users.findOne({_id:user_id}).username;
+	 },
+	 gettitle:function(todo_id)
+	 {   
+		 return Todo.findOne({_id:todo_id}).title;
+	 }
+});
+Template.networkrequest.events({
+	'click .js_button_network_approval':function()
+	{
+		Meteor.call("updateapproval",this._id);
+		return false;             
+	},
+	'click .js_button_network_reject':function()
+	{
+		Meteor.call("removetodo_fromnetwork",this._id);
+		return false;
+	}
+});
+Template.network_collections.helpers({
 	network: function(){
        return Network.find({network_id:Meteor.user()._id,approved:true});
 	},
@@ -189,15 +274,6 @@ Template.network_collections.helpers({
 	{   
 		return Todo.find({_id:Session.get("network_todo")});
 	},
-	getusername:function(user_id)
-	{   
-		return Meteor.users.findOne({_id:user_id}).username;
-	},
-	gettitle:function(todo_id)
-	{   
-		return Todo.findOne({_id:todo_id}).title;
-	}
-	,
 	getdescription:function(todo_id)
 	{
 		return Todo.findOne({_id:todo_id}).description;
@@ -219,21 +295,20 @@ Template.network_collections.helpers({
 		return Tasks.find({createdOn:Session.get("currtodoid_network")},{sort:{createdAt:-1}});
 
 	},
+	getusername:function(user_id)
+	{   
+		return Meteor.users.findOne({_id:user_id}).username;
+	},
+	gettitle:function(todo_id)
+	{   
+		return Todo.findOne({_id:todo_id}).title;
+	},
 	checkTheuser:function(user_id)
 	{
 		if(user_id==Meteor.user()._id)
 			return "You";
 		else
 			return Meteor.users.findOne({_id:user_id}).username;
-	},
-	getpermission:function()
-	{
-		var unchecked=Network.find({network_id:Meteor.user()._id,approved:false}).count();
-		if(unchecked!=0)
-		{
-			$("#modal_new_network").modal('show');
-		}
-		
 	}
 });
 Template.network_collections.events({
@@ -247,18 +322,11 @@ Template.network_collections.events({
 			Meteor.call("removetodo_fromnetwork",this._id);
 			
 		    return false;
-	     },
-	     'click .js_button_network_approval':function()
-	     {
-             Meteor.call("updateapproval",this._id);
-             return false;             
-	     },
-	     'click .js_button_network_reject':function()
-	     {
-             Meteor.call("removetodo_fromnetwork",this._id);
-             return false;
-	     },
-
+		 },
+		 'submit .js_remove-task_from_todo':function(event){
+			Meteor.call("removetask",this._id);
+			return false;
+		 },
 	     'submit .add_task_network': function(event)
 	       {   if(Meteor.user())
 		     {    var curr=Session.get("currtodoid_network");
@@ -304,11 +372,48 @@ Template.showtodo.events({
        return false;
     },
     'click .js_addnetwork_button':function(event){
-    	Session.set("todoidofperson",this._id);
-      $("#modal_add_network").modal('show');
-        }
+		Session.set("todoidofperson",this._id);
+         $("#modal_add_network").modal('show');
+    }
      ,
-	 
+	'click .js_edittask_button':function(event){
+		Session.set("todo_id",this._id);
+        $("#modal_edit_todo").modal('show');
+	 },
+	 'submit .edit_todo':function(event){
+		var title=event.target.todo_title.value;
+		var description=event.target.todo_description.value;
+		var due_date=new Date(event.target.todo_duedate.value);
+		var due_time=event.target.todo_duetime.value;
+		var todo_id=Session.get("todo_id");
+		if(title!="")
+		{   
+			Meteor.call("updatetitle",todo_id,title);
+		}
+		if(description!="")
+		{
+
+			Meteor.call("updatediscription",todo_id,description);
+		}
+		if(due_date!="Invalid Date")
+		{
+			Meteor.call("updateduedate",todo_id,due_date);
+		}
+		if(due_time!="")
+		{
+			Meteor.call("updateduetime",todo_id,due_time);
+		}
+
+		event.target.todo_title.value="";
+		event.target.todo_description.value="";
+		event.target.todo_duedate.value="";
+		event.target.todo_duetime.value="";
+		$("#modal_edit_todo").modal('hide');
+		return false;  
+
+
+
+	 },
     'submit .add-task': function(event)
 	{   if(Meteor.user())
 		{   var curr=Session.get("currtodoid");

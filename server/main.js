@@ -57,6 +57,20 @@ Meteor.methods({
      {
         Network.update({_id:network_id},{$set:{'approved':true}});
      }
+     ,updatetitle:function(todo_id,title)
+     {
+        Todo.update({_id:todo_id},{$set:{'title':title}});
+     },
+     updatediscription:function(todo_id,description){
+      Todo.update({_id:todo_id},{$set:{'description':description}});
+     },
+     updateduedate:function(todo_id,due_date)
+     {
+      Todo.update({_id:todo_id},{$set:{'due_date':due_date}});
+     },
+     updateduetime:function(todo_id,due_time){
+      Todo.update({_id:todo_id},{$set:{'due_time':due_time}});
+     }
 
 });
 // methods are used to secure the site 
