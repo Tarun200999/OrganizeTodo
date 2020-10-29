@@ -201,7 +201,6 @@ Template.showtodo.helpers({
 	},
 	 networksname : function()
 	 {  
-
 	 	return Network.find({todo_id:Session.get("todoidofperson")});
 	 },
 	 getnetwork_useranme :function(user_id)
@@ -225,7 +224,14 @@ Template.showtodo.helpers({
      	else
      		return;
 
-     }
+	 },
+	 checkstatus:function(approved)
+	 {
+		   if(approved)
+			 return "AccepteD";
+		   else
+		      return "Pending";	 
+	 }
 
 	
 });

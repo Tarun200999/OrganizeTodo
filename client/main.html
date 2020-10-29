@@ -252,11 +252,13 @@
 		      	 {{#each networksname}}
 		      <div class="container-fluid" style="margin:10px">
 		      	<div class="row">
-		      		<div class="col-sm-8">
+		      		<div class="col-sm-6">
 		      			 <h6>{{getnetwork_useranme network_id}}</h6>
-
-		      		</div>
-                    <div class="col-sm-4">
+					  </div>
+					  <div class="col-sm-3">
+                         <h6 style="color: rgb(129, 10, 133);font-weight: 200;">{{checkstatus approved}}</h6>
+					  </div>
+                    <div class="col-sm-3">
                     	<button class="js_showtodo_network_delete btn btn-warning">Remove</button>
                     </div>
                  </div>
