@@ -228,7 +228,7 @@ Template.showtodo.helpers({
 	 checkstatus:function(approved)
 	 {
 		   if(approved)
-			 return "AccepteD";
+			 return "Accepted";
 		   else
 		      return "Pending";	 
 	 }
