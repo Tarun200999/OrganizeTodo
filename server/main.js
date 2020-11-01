@@ -4,6 +4,31 @@ import { Todo } from "/lib/collection.js";
 import { Network } from "/lib/collection.js";
 Meteor.startup(function()
 {
+   process.env.MAIL_URL='smtp://tk4977163%40gmail.com:gaCUXv5bDAk4OZ6K@smtp-relay.sendinblue.com:587';
+   Accounts.emailTemplates.siteName = 'OrganizeTodo';
+   Accounts.emailTemplates.from = 'no-reply@organize-todo.herokuapp.com';
+   Accounts.emailTemplates.verifyEmail = {
+      subject() {
+         return "[Important] Verify your Email Address!";
+      },
+      text(user, url) {
+         return `Verify your e-mail by following this link: ${url}`;
+      }
+   };
+   Accounts.emailTemplates.resetPassword={
+      subject() {
+         return "Reset Password ";
+      },
+      text(user, url) {
+         return `Reset Your password by following this link: ${url}`;
+      }
+
+
+   }
+   Accounts.config({
+      sendVerificationEmail: true,
+      forbidClientAccountCreation: false
+   })
 }
 );
 Meteor.methods({

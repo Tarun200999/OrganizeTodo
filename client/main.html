@@ -6,7 +6,9 @@
  </head>
 <body></body>
 <!--IT Is THE LAYOUT OF THE PROJECT WINDOW -->
+
 <template name="ApplicationLayout">
+	
    <div style="margin:0px;display: flex;flex-direction: column;">
 	 <div class="navbar_top_fix"><!--to fix the navbar at top-->
 		 {{> yield "1" }}
@@ -19,8 +21,8 @@
 	</div>
 	<div style="padding: 10px;">
 	 	{{> yield "4" }}	
+	</div>		
 	</div>	
- </div>	
 
 </template>
 
@@ -31,9 +33,10 @@
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			
 					<ul class="navbar-nav mr-auto">
+						{{#if currentUser}}
 							<li>
 								<a class="nav-link" href="/showtodo" style="color:black;">My Todo <span class="badge badge-primary">{{counttodo}}</span></a>
 							</li>
@@ -42,22 +45,24 @@
 							</li> 
 							<li>
 								<a class="nav-link" href="/todorequests" style="color:black;">Todo Requests <span class="badge badge-primary">{{countrequest}}</span></a>
-							</li> 
+							</li>
+							<li>
+								{{#if isVerified}}
+								 {{else}}
+								 <h6 style="color: red;">Verify Your email to recover your account In case forgot password</h6>
+						        {{/if}}
+							</li>
+							{{/if}}	
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li style="margin-right: 30px;font-weight: 400;color:black;padding: 10px;border-radius: 10px;">{{>loginButtons align="right"}}</li>
 						</ul>
-					
 		</div><!-- navbar here-->
  </nav>
 </template>
 <template name="empty">
 	<div></div>
 </template>
-<template name="empty1">
-	<button type="button" class="btn btn-success" style="margin-left: 10px;" onClick="window.location.reload();">Refresh</button>
-</template>
-
 <!--THIS IS HOMEPAGE WHEN NO USER LOGGIND IN THE WEBSITE -->
 <template name="homepage">
 	<div>
@@ -66,10 +71,12 @@
 	 <h2 style="text-align: center;font-weight: 400;margin-top: 60px;color:black;">With Your TeamMates,Friends,Collegues...</h2>
      <div style="margin-top: 30px;height: 300px;padding: 30px;">
 	   
-		<h5 class="display-4" style="margin-top: 100px;color:black;">Developer</h5>
-		<h5 style="margin-top: 20px;color:black;font-weight: 200;">TARUN</h5>
-		<h5 style="margin-top: 20px;color:black;font-weight: 200;">IT-2ND SHIFT 03596303118</h5>
-		<h5 style="margin-top: 20px;color:black;font-weight: 200;">MAHARAJA SURAJMAL INSTITUTE OF TECHNOLOGY</h5>
+		<h5 style="margin-top: 100px;color:black;">Developer</h5>
+		<h5 style="margin-top: 20px;color:black;font-weight: 200;"><a href="https://www.linkedin.com/in/tarun-459a68171/" target="_blank">TARUN</a></h5>
+		<h5 style="margin-top: 20px;color:black;font-weight: 200;"><a href="http://www.msit.in/" target="_blank">MAHARAJA SURAJMAL INSTITUTE OF TECHNOLOGY</a></h5>
+		<a href = "https://mail.google.com/mail/?view=cm&fs=1&to=tk4977163@gmail.com" target="_blank">Contact Developer</a>
+		<h5></h5>
+
 
 	 </div>	 
 

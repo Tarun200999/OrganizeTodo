@@ -174,7 +174,15 @@ Router.route('/showtodo/networks', function ()
 	
 });    
 Accounts.ui.config({
-  passwordSignupFields: 'USERNAME_ONLY'
+  passwordSignupFields: "USERNAME_AND_EMAIL"
+});
+
+
+
+
+Template.registerHelper('isVerified',function(){
+  if ( Meteor.user() && Meteor.user().emails ) return Meteor.user().emails[0].verified;
+  else return false;
 });
 //this is used to configer the user login form
 Template.navbar.helpers({
